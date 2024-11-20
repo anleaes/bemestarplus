@@ -4,3 +4,7 @@ bemestarplusapp/__pycache__/*
 /apps/annotations/migrations/*
 /apps/comments/__pycache__/*
 /apps/comments/migrations/*
+/apps/accounts/__pycache__/*
+/apps/accounts/migrations/*
+/apps/core/__pycache__/*
+/apps/core/migrations/*
