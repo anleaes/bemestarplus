@@ -39,3 +39,26 @@ def edit_annotation(request, id_annotation):
     form = AnnotationForm(instance=annotation)
     context['form'] = form
     return render(request, template_name, context)
+
+def search_annotations(request):
+    template_name = 'annotations/list_annotations.html'
+    query = request.GET.get('query', '')  # Obtém a query ou string vazia por padrão
+    
+    # Verifica se o usuário logado é admin
+    if request.user.is_superuser:
+        # Admin pode buscar anotações de qualquer usuário
+        annotations = Annotations.objects.filter(
+            user__username__icontains=query
+        )
+    else:
+        # Usuários não administradores só podem ver suas próprias anotações
+        annotations = Annotations.objects.filter(
+            user=request.user,
+            user__username__icontains=query
+        )
+    
+    context = {
+        'annotations': annotations
+    }
+
+    return render(request, template_name, context)
