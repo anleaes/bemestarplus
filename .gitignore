@@ -1,0 +1,6 @@
+db.sqlite3
+bemestarplus/__pycache__/*
+/apps/annotations/__pycache__/*
+/apps/annotations/migrations/*
+/apps/comments/__pycache__/*
+/apps/comments/migrations/*
