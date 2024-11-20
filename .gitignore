@@ -1,5 +1,5 @@
 db.sqlite3
-bemestarplus/__pycache__/*
+bemestarplusapp/__pycache__/*
 /apps/annotations/__pycache__/*
 /apps/annotations/migrations/*
 /apps/comments/__pycache__/*
