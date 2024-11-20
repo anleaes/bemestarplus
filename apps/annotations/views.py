@@ -40,6 +40,7 @@ def edit_annotation(request, id_annotation):
     context['form'] = form
     return render(request, template_name, context)
 
+#adicionado por PedroQ o a busca de comentários.
 def search_annotations(request):
     template_name = 'annotations/list_annotations.html'
     query = request.GET.get('query', '')  # Obtém a query ou string vazia por padrão
