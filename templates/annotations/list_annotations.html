@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+    Anotações - {{ block.super }}
+
+{% endblock title %}
+
+{% block body %}
+
+    <div class="container">
+        <br />
+        <h5><b>Anotações</b></h5>
+        <div class="row">
+            <div class ="col-md-12">
+                <br />
+                    <a href="{% url 'annotations:add_annotation' %}">Adicionar nova Anotação</a>
+                <br />
+                <br />
+                <table class="table table-hover">
+                <thead>
+                    <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Data</th>
+                    <th scope="col">Descricao</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for annotation in annotations %}
+                        <tr>
+                            <th scope="row">{{ annotation.id }}</th>
+                            <td>{{ annotation.datetime }}</td>
+                            <td>{{ annotation.description }}</td>
+                            <td>
+                                <a href="{% url 'annotations:edit_annotation' annotation.id %}" class="btn btn-primary btn-sm">Editar</a>
+                            </td>                           
+                        </tr> 
+                    {% endfor %}
+                </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock body %}
