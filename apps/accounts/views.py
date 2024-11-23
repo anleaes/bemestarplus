@@ -75,7 +75,7 @@ def user_change_information(request, username):
 @login_required(login_url='/contas/login/')
 def list_accounts(request):
     template_name = 'accounts/list_accounts.html'
-    account = User.objects.all()  # Recupera todos os usuários
+    account = User.objects.order_by('id').all()  # Recupera todos os usuários
     annotation = Annotations.objects.all()  # Recupera todos os usuários
     context = {
         'accounts': account,

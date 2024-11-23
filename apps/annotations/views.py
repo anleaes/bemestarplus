@@ -31,15 +31,6 @@ def list_annotations(request):
     }
     return render(request, template_name, context)
 
-def list_annotations_admin(request, user_name):
-    template_name = 'annotations/list_annotations.html'
-    annotations = Annotations.objects.all(User, user=user_name)
-    #annotations = get_object_or_404(Annotations,  user=user_name)
-    context = {
-        'annotations': annotations
-    }
-    return render(request, template_name, context)
-
 @login_required(login_url='/contas/login/')
 def edit_annotation(request, id_annotation):
     template_name = 'annotations/add_annotation.html'
@@ -54,4 +45,11 @@ def edit_annotation(request, id_annotation):
     context['form'] = form
     return render(request, template_name, context)
 
-
+@login_required(login_url='/contas/login/')
+def list_annotations_admin(request, id_account):
+    template_name = 'annotations/list_annotations.html'
+    annotations = Annotations.objects.filter(user_id=id_account)
+    context = {
+        'annotations': annotations
+    }
+    return render(request, template_name, context)
