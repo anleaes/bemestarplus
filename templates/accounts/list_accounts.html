@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+    Lista de Pacientes - {{ block.super }}
+
+{% endblock title %}
+
+{% block body %}
+
+    <div class="container">
+    {% if user.is_superuser %}
+        <br />
+        <h5><b>Lista de Pacientes</b></h5>
+        <div class="row">
+            <div class ="col-md-12">
+                <br />
+                    <a href="{% url 'accounts:add_user' %}">Adicionar novo Paciente</a>
+                <br />
+                <br />
+                <table class="table table-hover">
+                <thead>
+                    <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Sobrenome</th>
+                    <th scope="col">E-mail</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for account in accounts %}
+                    {# for annotation in annotations #}
+                        <tr>
+                            <th scope="row">{{ account.id }}</th>
+                            <td>{{ account.first_name }}</td>
+                            <td>{{ account.last_name }}</td>
+                            <td>{{ account.email }}</td>
+                            <td>
+                                <a href="{# url 'accounts:edit_account' account.id #}" class="btn btn-primary btn-sm">Editar</a>                                
+                            </td>
+                            <td>
+                                <a href="{% url 'annotations:list_annotations_admin' %}" class="btn btn-primary btn-sm">Acompanhar Paciente</a>                                
+                            </td>    
+                        </tr> 
+                    {# endfor #}
+                    {% endfor %}
+                </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <br />
+        <br />
+        <h5><b>Você não tem Permissão.</b></h5>
+    {% endif %}
+    </div>
+
+{% endblock body %}

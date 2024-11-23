@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from .forms import UserForm, UserChangeInformationForm
+from annotations.models import Annotations
 
 # Create your views here.
 
@@ -31,7 +32,7 @@ def add_user(request):
             f = form.save(commit=False)
             f.set_password(f.password)
             f.save()
-            return redirect('accounts:user_login')
+            return redirect('accounts:list_accounts')
         else:
             return redirect('accounts:add_user')
     form = UserForm()
@@ -69,4 +70,15 @@ def user_change_information(request, username):
             form.save()
     form = UserChangeInformationForm(instance=user)
     context['form'] = form
+    return render(request, template_name, context)
+
+@login_required(login_url='/contas/login/')
+def list_accounts(request):
+    template_name = 'accounts/list_accounts.html'
+    account = User.objects.all()  # Recupera todos os usuários
+    annotation = Annotations.objects.all()  # Recupera todos os usuários
+    context = {
+        'accounts': account,
+        'annotations': annotation,
+    }
     return render(request, template_name, context)

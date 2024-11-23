@@ -30,6 +30,14 @@ def list_annotations(request):
     }
     return render(request, template_name, context)
 
+def list_annotations_admin(request):
+    template_name = 'annotations/list_annotations.html'
+    annotations = Annotations.objects.all()
+    context = {
+        'annotations': annotations
+    }
+    return render(request, template_name, context)
+
 @login_required(login_url='/contas/login/')
 def edit_annotation(request, id_annotation):
     template_name = 'annotations/add_annotation.html'
@@ -43,3 +51,5 @@ def edit_annotation(request, id_annotation):
     form = AnnotationForm(instance=annotation)
     context['form'] = form
     return render(request, template_name, context)
+
+
