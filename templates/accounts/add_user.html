@@ -30,10 +30,12 @@
                         <label for="{{ form.email.id_for_label }}">E-mail</label>
                         {{ form.email|add_class:"form-control" }}
                     </div>
+                    {% if form.password is not null %}
                     <div class="form-group">
                         <label for="{{ form.password.id_for_label }}">Senha</label>
                         {{ form.password|add_class:"form-control"|attr:"type:password" }}
                     </div>
+                    {% endif %}
                     <button type="submit" class="btn btn-primary">Salvar</button>
                 </form>
             </div>

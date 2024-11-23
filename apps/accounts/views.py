@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
-from .forms import UserForm, UserChangeInformationForm
+from .forms import UserForm, UserChangeInformationForm, UserFormEdit
 from annotations.models import Annotations
 
 # Create your views here.
@@ -81,4 +81,18 @@ def list_accounts(request):
         'accounts': account,
         'annotations': annotation,
     }
+    return render(request, template_name, context)
+
+@login_required(login_url='/contas/login/')
+def edit_account(request, id_account):
+    template_name = 'accounts/add_user.html'
+    context ={}
+    account = get_object_or_404(User, id=id_account)
+    if request.method == 'POST':
+        form = UserFormEdit(request.POST, instance=account)
+        if form.is_valid():
+            form.save()
+            return redirect('accounts:list_accounts')
+    form = UserFormEdit(instance=account)
+    context['form'] = form
     return render(request, template_name, context)

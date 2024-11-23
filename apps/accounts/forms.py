@@ -10,4 +10,9 @@ class UserChangeInformationForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['email'] #fields = ['first_name', 'last_name', 'email']
+
+class UserFormEdit(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'username', 'email']
         
