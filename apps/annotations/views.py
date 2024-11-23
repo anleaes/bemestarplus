@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import AnnotationForm
 from .models import Annotations
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -30,9 +31,10 @@ def list_annotations(request):
     }
     return render(request, template_name, context)
 
-def list_annotations_admin(request):
+def list_annotations_admin(request, user_name):
     template_name = 'annotations/list_annotations.html'
-    annotations = Annotations.objects.all()
+    annotations = Annotations.objects.all(User, user=user_name)
+    #annotations = get_object_or_404(Annotations,  user=user_name)
     context = {
         'annotations': annotations
     }
