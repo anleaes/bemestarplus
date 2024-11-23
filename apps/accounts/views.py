@@ -15,7 +15,8 @@ def user_login(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect(request.GET.get('next', '/'))
+            #return redirect(request.GET.get('next', '/'))
+            return redirect(request.GET.get('next', 'annotations/list_annotations.html'))
         else:
             return redirect('accounts:user_login')
     return render(request, template_name, {})
