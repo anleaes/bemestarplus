@@ -10,5 +10,6 @@ urlpatterns = [
     path('alterar-senha/',views.user_change_password, name='user_change_password'),
     path('alterar-usuario/<username>/',views.user_change_information, name='user_change_information'),
     path('',views.list_accounts, name='list_accounts'),
-    path('editar/<int:id_account>/', views.edit_account, name='edit_account'),        
+    path('editar/<int:id_account>/', views.edit_account, name='edit_account'),
+    path('buscar/', views.search_accounts, name='search_accounts'),       
 ]

@@ -84,6 +84,18 @@ def list_accounts(request):
     return render(request, template_name, context)
 
 @login_required(login_url='/contas/login/')
+def search_accounts(request):    
+    template_name = 'accounts/list_accounts.html'
+    query = request.GET.get('query')     
+    account = User.objects.filter(first_name__icontains=query)
+    annotation = Annotations.objects.all()
+    context = {
+        'accounts': account,
+        'annotations': annotation,
+    }
+    return render(request,template_name, context)
+
+@login_required(login_url='/contas/login/')
 def edit_account(request, id_account):
     template_name = 'accounts/add_user.html'
     context ={}
