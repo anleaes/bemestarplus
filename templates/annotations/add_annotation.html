@@ -20,7 +20,15 @@
                 <div class="form-group">
                     <label for="{{ form.description.id_for_label }}">Descrição</label>
                     {{ form.description|add_class:"form-control" }}
-                 </div>
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.day_state.id_for_label }}">Estado do Dia</label>
+                    {{ form.day_state|add_class:"form-control" }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.emotional_state.id_for_label }}">Estado Emocional</label>
+                    {{ form.emotional_state|add_class:"form-control" }}
+                </div>
                     <button type="submit" class="btn btn-primary">Salvar</button>       
                 </form>
             </div>

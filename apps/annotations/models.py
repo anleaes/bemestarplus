@@ -4,9 +4,27 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class Annotations(models.Model):
+    #Lista de opções de como foi o dia
+    DAY_STATE_CHOICE = [
+        ('muito_bom', 'Muito bom'),
+        ('bom', 'Bom'),
+        ('normal', 'Normal'),
+        ('mal', 'Mal'),
+        ('muito_mal', 'Muito mal'),
+    ]
+    EMOTIONAL_STATE_CHOICE = [
+        ('animado', 'Animado'),
+        ('calmo', 'Calmo'),
+        ('frustrado', 'Frustrado'),
+        ('confuso', 'Confuso'),
+        ('cansado', 'Cansado'),
+
+    ]
     datetime = models.DateTimeField(auto_now_add=True)   
     description = models.TextField('Descricao', max_length=200)
     user = models.ForeignKey(User, on_delete=models.CASCADE) 
+    day_state = models.CharField('Estado do dia', max_length=20, choices=DAY_STATE_CHOICE, default='normal')
+    emotional_state = models.CharField('Estado emocional', max_length=20, choices=EMOTIONAL_STATE_CHOICE, default="")
     
     class Meta:
         verbose_name = 'Anotação'
