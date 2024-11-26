@@ -7,5 +7,6 @@ urlpatterns = [
     path('', views.list_annotations, name='list_annotations'),
     path('admin/<int:id_account>/', views.list_annotations_admin, name='list_annotations_admin'),    
     path('adicionar/', views.add_annotation, name='add_annotation'),
-    path('editar/<int:id_annotation>/', views.edit_annotation, name='edit_annotation'),      
+    path('editar/<int:id_annotation>/', views.edit_annotation, name='edit_annotation'),
+    path('admin/<int:id_annotation>/comentario/', views.add_annotation_comment, name='add_annotation_comment'),
 ]

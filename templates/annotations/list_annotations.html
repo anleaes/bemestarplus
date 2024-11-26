@@ -24,7 +24,7 @@
                     <th scope="col">Data</th>
                     <th scope="col">Descricao</th>
                     <th scope="col"></th>
-                    <th scope="col"></th>
+                    <th scope="col"></th>                    
                     </tr>
                 </thead>
                 <tbody>
@@ -35,7 +35,22 @@
                             <td>{{ annotation.description }}</td>
                             <td>
                                 <a href="{% url 'annotations:edit_annotation' annotation.id %}" class="btn btn-primary btn-sm">Editar</a>
-                            </td>                           
+                            </td>                            
+                            <td>
+                                {% if user.is_superuser %}
+                                <a href="{% url 'annotations:add_annotation_comment' id_annotation=annotation.id %}" class="btn btn-primary btn-sm">Comentário</a>
+                                {% endif %}
+                            </td>                            
+                        </tr>
+                        <tr>
+                            <td colspan="5"> 
+                                <h6>Comentários:</h6> 
+                                {% for comment in annotation.comments.all %} 
+                                    <p>{{ comment.comment }}</p> 
+                                {% empty %} 
+                                    <p>Sem comentário.</p> 
+                                {% endfor %} 
+                            </td> 
                         </tr> 
                     {% endfor %}
                 </tbody>

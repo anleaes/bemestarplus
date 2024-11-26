@@ -33,3 +33,12 @@ class Annotations(models.Model):
 
     def __str__(self):
         return self.description
+    
+class Comments(models.Model):
+    annotation = models.ForeignKey(Annotations, related_name='comments', on_delete=models.CASCADE) 
+    user = models.ForeignKey(User, on_delete=models.CASCADE) 
+    comment = models.TextField() 
+    created_at = models.DateTimeField(auto_now_add=True) 
+         
+    def __str__(self): 
+        return self.comment

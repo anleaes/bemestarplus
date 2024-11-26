@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import AnnotationForm
-from .models import Annotations
+from .forms import AnnotationForm, CommentForm
+from .models import Annotations, Comments
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
@@ -53,3 +53,23 @@ def list_annotations_admin(request, id_account):
         'annotations': annotations
     }
     return render(request, template_name, context)
+
+@login_required(login_url='/contas/login/')
+def add_annotation_comment(request, id_annotation):
+    template_name = 'annotations/add_annotation_comment.html'
+    annotation = get_object_or_404(Annotations, id=id_annotation)
+    context = {
+        'annotations': annotation
+    }
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            f = form.save(commit=False)
+            f.user = request.user
+            f.annotation = annotation
+            f.save()
+            return redirect('annotations:list_annotations_admin', id_account=annotation.user.id)
+    form = CommentForm()
+    context['form'] = form
+    return render(request,template_name,context)
+
