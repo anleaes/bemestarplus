@@ -34,8 +34,10 @@
                             <td>{{ annotation.datetime }}</td>
                             <td>{{ annotation.description }}</td>
                             <td>
-                                <a href="{% url 'annotations:edit_annotation' annotation.id %}" class="btn btn-primary btn-sm">Editar</a>
-                            </td>                            
+                                {% if not user.is_superuser and not annotation.is_locked %}
+                                    <a href="{% url 'annotations:edit_annotation' annotation.id %}" class="btn btn-primary btn-sm">Editar</a>
+                                {% endif %}
+                            </td>                          
                             <td>
                                 {% if user.is_superuser %}
                                 <a href="{% url 'annotations:add_annotation_comment' id_annotation=annotation.id %}" class="btn btn-primary btn-sm">Comentário</a>

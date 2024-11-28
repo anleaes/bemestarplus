@@ -36,6 +36,9 @@ def edit_annotation(request, id_annotation):
     template_name = 'annotations/add_annotation.html'
     context ={}
     annotation = get_object_or_404(Annotations, id=id_annotation, user=request.user)
+    if annotation.is_locked:
+        return redirect('annotations:list_annotations')
+    
     if request.method == 'POST':
         form = AnnotationForm(request.POST, instance=annotation)
         if form.is_valid():
@@ -68,6 +71,8 @@ def add_annotation_comment(request, id_annotation):
             f.user = request.user
             f.annotation = annotation
             f.save()
+            annotation.is_locked = True
+            annotation.save()
             return redirect('annotations:list_annotations_admin', id_account=annotation.user.id)
     form = CommentForm()
     context['form'] = form

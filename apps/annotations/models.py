@@ -25,6 +25,7 @@ class Annotations(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE) 
     day_state = models.CharField('Estado do dia', max_length=20, choices=DAY_STATE_CHOICE, default='normal')
     emotional_state = models.CharField('Estado emocional', max_length=20, choices=EMOTIONAL_STATE_CHOICE, default="")
+    is_locked = models.BooleanField(default=False)
     
     class Meta:
         verbose_name = 'Anotação'
@@ -35,10 +36,15 @@ class Annotations(models.Model):
         return self.description
     
 class Comments(models.Model):
+    STATUS_CHOICES = [
+        (False, 'Em análise'),
+        (True, 'Respondido'),
+    ]
     annotation = models.ForeignKey(Annotations, related_name='comments', on_delete=models.CASCADE) 
     user = models.ForeignKey(User, on_delete=models.CASCADE) 
     comment = models.TextField() 
     created_at = models.DateTimeField(auto_now_add=True) 
+    status = models.BooleanField(choices=STATUS_CHOICES, default=False)
          
     def __str__(self): 
         return self.comment
