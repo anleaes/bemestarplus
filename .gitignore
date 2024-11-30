@@ -8,3 +8,5 @@ bemestarplusapp/__pycache__/*
 /apps/accounts/migrations/*
 /apps/core/__pycache__/*
 /apps/core/migrations/*
+/apps/prescriptions/__pycache__/*
+/apps/prescriptions/migrations/*

@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'accounts.apps.AccountsConfig',
     'annotations.apps.AnnotationsConfig',
+    'prescriptions.apps.PrescriptionsConfig',
 ]
 
 MIDDLEWARE = [
