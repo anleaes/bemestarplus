@@ -76,10 +76,10 @@ def user_change_information(request, username):
 def list_accounts(request):
     template_name = 'accounts/list_accounts.html'
     account = User.objects.order_by('id').all()  # Recupera todos os usuários
-    annotation = Annotations.objects.all()  # Recupera todos os usuários
+    #annotation = Annotations.objects.all()  # Recupera todos os usuários
     context = {
         'accounts': account,
-        'annotations': annotation,
+        #'annotations': annotation,
     }
     return render(request, template_name, context)
 
