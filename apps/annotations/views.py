@@ -73,8 +73,23 @@ def add_annotation_comment(request, id_annotation):
             f.save()
             annotation.is_locked = True
             annotation.save()
+            form.save_m2m()
             return redirect('annotations:list_annotations_admin', id_account=annotation.user.id)
     form = CommentForm()
     context['form'] = form
     return render(request,template_name,context)
 
+@login_required(login_url='/contas/login/')
+def edit_annotation_comment(request, id_comment):
+    template_name = 'annotations/add_annotation_comment.html'
+    context ={}
+    comment = get_object_or_404(Comments, id=id_comment, user=request.user)  
+    
+    if request.method == 'POST':
+        form = CommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+            return redirect('annotations:list_annotations_admin')
+    form = CommentForm(instance=comment)
+    context['form'] = form
+    return render(request, template_name, context)

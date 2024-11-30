@@ -44,12 +44,14 @@
                                     Inativo
                                 {% endif %}
                             </td>
+                             {% if not user.is_superuser %}
                             <td>
                                 <a href="{% url 'prescriptions:edit_prescription' prescription.id %}" class="btn btn-primary btn-sm">Editar</a>
                             </td>
                             <td>
                                 <a href="{% url 'prescriptions:delete_prescription' prescription.id %}" class="btn btn-danger btn-sm ">Excluir</a>
                             </td>
+                            {% endif %}
                         </tr>
                     {% endfor %}
                 </tbody>

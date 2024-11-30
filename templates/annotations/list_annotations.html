@@ -42,7 +42,12 @@
                                 {% if user.is_superuser %}
                                 <a href="{% url 'annotations:add_annotation_comment' id_annotation=annotation.id %}" class="btn btn-primary btn-sm">Comentário</a>
                                 {% endif %}
-                            </td>                            
+                            </td>
+                            <td>
+                                {% if user.is_superuser %}
+                                    <a href="{% url 'annotations:edit_annotation_comment' annotation.id %}" class="btn btn-primary btn-sm">Editar</a>
+                                {% endif %}
+                            </td>                              
                         </tr>
                         <tr>
                             <td colspan="5"> 

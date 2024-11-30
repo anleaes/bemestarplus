@@ -9,4 +9,5 @@ urlpatterns = [
     path('adicionar/', views.add_annotation, name='add_annotation'),
     path('editar/<int:id_annotation>/', views.edit_annotation, name='edit_annotation'),
     path('admin/<int:id_annotation>/comentario/', views.add_annotation_comment, name='add_annotation_comment'),
+    path('admin/<int:id_annotation>/comentario/editar', views.add_annotation_comment, name='edit_annotation_comment'),
 ]
