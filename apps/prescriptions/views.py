@@ -53,3 +53,12 @@ def delete_prescription(request, id_prescription):
     else:
         return redirect('core:home')
     return redirect('prescriptions:list_prescriptions')
+
+@login_required(login_url='/contas/login/')
+def list_prescriptions_admin(request, id_account):
+    template_name = 'prescriptions/list_prescriptions.html'
+    prescriptions = Prescription.objects.filter(user_id=id_account)
+    context = {
+        'prescriptions': prescriptions
+    }
+    return render(request, template_name, context)
