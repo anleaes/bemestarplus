@@ -93,3 +93,14 @@ def edit_annotation_comment(request, id_comment):
     form = CommentForm(instance=comment)
     context['form'] = form
     return render(request, template_name, context)
+
+@login_required(login_url='/contas/login/')
+def report_alerts(request):
+    template_name = 'annotations/report_alerts.html'
+    account = User.objects.order_by('id').all()  # Recupera todos os usuários
+    annotation = Annotations.objects.all()  # Recupera todos os usuários
+    context = {
+        'accounts': account,
+        'annotations': annotation,
+    }
+    return render(request, template_name, context)
