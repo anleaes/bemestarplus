@@ -96,11 +96,19 @@ def edit_annotation_comment(request, id_comment):
 
 @login_required(login_url='/contas/login/')
 def report_alerts(request):
-    template_name = 'annotations/report_alerts.html'
-    account = User.objects.order_by('id').all()  # Recupera todos os usuários
-    annotation = Annotations.objects.all()  # Recupera todos os usuários
+    template_name = 'annotations/report_alerts.html'   
+    accounts = User.objects.all()  
+    user_emotional_states = []
+    for account in accounts:
+        emotional_counts = []
+        for state, _ in Annotations.EMOTIONAL_STATE_CHOICE:
+            count = Annotations.objects.filter(user=account, emotional_state=state).count()
+            emotional_counts.append((state, count))
+        user_emotional_states.append({
+            'user': account,
+            'states': emotional_counts
+        })    
     context = {
-        'accounts': account,
-        'annotations': annotation,
+        'user_emotional_states': user_emotional_states,
     }
     return render(request, template_name, context)
