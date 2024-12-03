@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.utils.timezone import now
 from datetime import timedelta
+from django.contrib import messages
+import random
 
 # Create your views here.
 
@@ -19,7 +21,27 @@ def add_annotation(request):
             f.user = request.user
             f.save()
             form.save_m2m()
+            # Verificar estados emocionais negativos
+            negative_states = ['cansado', 'frustrado', 'confuso']
+            if f.emotional_state in negative_states:
+                recent_negative_annotations = Annotations.objects.filter(
+                    user=request.user, 
+                    emotional_state=f.emotional_state
+                ).count()
+                # Exibir mensagem de ajuda se o mesmo estado for registrado mais de 3 vezes
+                if recent_negative_annotations >= 3:
+                    help_messages = [
+                        "Lembre-se de tirar uma pausa para relaxar e respirar fundo.",
+                        "Converse com alguém de confiança sobre como você está se sentindo.",
+                        "Que tal anotar seus pensamentos para organizar suas ideias?",
+                        "Pequenos passos podem ajudar a aliviar o cansaço ou a frustração.",
+                        "Você está fazendo o seu melhor, e isso é o suficiente!",
+                        "Se possível, tire um momento para cuidar de você mesmo."
+                    ]
+                    random_message = random.choice(help_messages)
+                    messages.warning(request, random_message)
             return redirect('annotations:list_annotations')
+
     form = AnnotationForm()
     context['form'] = form
     return render(request, template_name, context)
