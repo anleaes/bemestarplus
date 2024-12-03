@@ -10,5 +10,6 @@ urlpatterns = [
     path('editar/<int:id_annotation>/', views.edit_annotation, name='edit_annotation'),
     path('admin/<int:id_annotation>/comentario/', views.add_annotation_comment, name='add_annotation_comment'),
     path('admin/<int:id_annotation>/comentario/editar', views.add_annotation_comment, name='edit_annotation_comment'),
-    path('relatorio-alertas/', views.report_alerts, name='report_alerts'),    
+    path('relatorio-alertas/', views.report_alerts, name='report_alerts'),
+    path('relatorio-emocional/', views.report_emotional_trends, name='report_emotional_trends'),    
 ]

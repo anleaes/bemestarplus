@@ -137,3 +137,30 @@ def report_alerts(request):
         'user_emotional_states': user_emotional_states,
     }
     return render(request, template_name, context)
+
+@login_required(login_url='/contas/login/')
+def report_emotional_trends(request):
+    template_name = 'annotations/report_emotional_trends.html'
+    seven_days_ago = now() - timedelta(days=7)
+    accounts = User.objects.all()
+
+    user_emotional_trends = []
+    for account in accounts:
+        trends = {}
+        for state, label in Annotations.EMOTIONAL_STATE_CHOICE:  # Corrigido aqui
+            count = Annotations.objects.filter(user=account, emotional_state=state, datetime__gte=seven_days_ago).count()
+            if count > 0:
+                trends[state] = count
+        if trends:
+            # Identificar o estado emocional mais frequente
+            most_frequent_state = max(trends, key=trends.get)
+            user_emotional_trends.append({
+                'user': account,
+                'most_frequent_state': most_frequent_state,
+                'frequency': trends[most_frequent_state],
+            })
+
+    context = {
+        'user_emotional_trends': user_emotional_trends,
+    }
+    return render(request, template_name, context)

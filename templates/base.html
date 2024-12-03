@@ -24,10 +24,11 @@
                     <div class="dropdown-menu" aria-labelledby="dropdown05">
                         {% if user.is_superuser %}
                         <a class="dropdown-item" href="{% url 'accounts:list_accounts' %}">Pacientes</a>
+                        <a class="dropdown-item" href="{% url 'annotations:report_alerts' %}">Alertas</a>
+                        <a class="dropdown-item" href="{% url 'annotations:report_emotional_trends' %}">Relatório Tendências</a>
                         {% endif %}
                         <a class="dropdown-item" href="{% url 'annotations:list_annotations' %}">Anotações</a> 
-                        <a class="dropdown-item" href="{% url 'prescriptions:list_prescriptions' %}">Prescrições</a>
-                        <a class="dropdown-item" href="{% url 'annotations:report_alerts' %}">Alertas</a>  
+                        <a class="dropdown-item" href="{% url 'prescriptions:list_prescriptions' %}">Prescrições</a>                         
                     </div>
                 </li>
             </ul>
