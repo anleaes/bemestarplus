@@ -3,6 +3,8 @@ from .forms import AnnotationForm, CommentForm
 from .models import Annotations, Comments
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.utils.timezone import now
+from datetime import timedelta
 
 # Create your views here.
 
@@ -96,13 +98,14 @@ def edit_annotation_comment(request, id_comment):
 
 @login_required(login_url='/contas/login/')
 def report_alerts(request):
-    template_name = 'annotations/report_alerts.html'   
+    template_name = 'annotations/report_alerts.html'
+    seven_days_ago = now() - timedelta(days=7)   
     accounts = User.objects.all()  
     user_emotional_states = []
     for account in accounts:
         emotional_counts = []
         for state, _ in Annotations.EMOTIONAL_STATE_CHOICE:
-            count = Annotations.objects.filter(user=account, emotional_state=state).count()
+            count = Annotations.objects.filter(user=account, emotional_state=state, datetime__gte=seven_days_ago).count()
             emotional_counts.append((state, count))
         user_emotional_states.append({
             'user': account,
