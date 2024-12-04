@@ -20,21 +20,23 @@
                             <th scope="col">Nome</th>
                             <th scope="col">Sobrenome</th>
                             <th scope="col">E-mail</th>
-                            <th scope="col">Alertas</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for item in user_emotional_states %}
-                            <tr>
+                            <tr 
+                                {% if item.alert_level == 'red' %}
+                                    class="table-danger"
+                                {% elif item.alert_level == 'yellow' %}
+                                    class="table-warning"
+                                {% elif item.alert_level == 'green' %}
+                                    class="table-success"
+                                {% endif %}
+                            >
                                 <th scope="row">{{ item.user.id }}</th>
                                 <td>{{ item.user.first_name }}</td>
                                 <td>{{ item.user.last_name }}</td>
                                 <td>{{ item.user.email }}</td>
-                                <td>
-                                    {% for state, count in item.states %}
-                                        {{ state|capfirst }}: {{ count }}<br />
-                                    {% endfor %}
-                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>

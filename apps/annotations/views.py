@@ -8,6 +8,7 @@ from datetime import timedelta
 from django.contrib import messages
 import random
 
+
 # Create your views here.
 
 @login_required(login_url='/contas/login/')
@@ -21,14 +22,12 @@ def add_annotation(request):
             f.user = request.user
             f.save()
             form.save_m2m()
-            # Verificar estados emocionais negativos
             negative_states = ['cansado', 'frustrado', 'confuso']
             if f.emotional_state in negative_states:
                 recent_negative_annotations = Annotations.objects.filter(
                     user=request.user, 
                     emotional_state=f.emotional_state
                 ).count()
-                # Exibir mensagem de ajuda se o mesmo estado for registrado mais de 3 vezes
                 if recent_negative_annotations >= 3:
                     help_messages = [
                         "Lembre-se de tirar uma pausa para relaxar e respirar fundo.",
@@ -121,18 +120,38 @@ def edit_annotation_comment(request, id_comment):
 @login_required(login_url='/contas/login/')
 def report_alerts(request):
     template_name = 'annotations/report_alerts.html'
-    seven_days_ago = now() - timedelta(days=7)   
-    accounts = User.objects.all()  
+    seven_days_ago = now() - timedelta(days=7)
+    accounts = User.objects.all()
     user_emotional_states = []
+
     for account in accounts:
-        emotional_counts = []
-        for state, _ in Annotations.EMOTIONAL_STATE_CHOICE:
-            count = Annotations.objects.filter(user=account, emotional_state=state, datetime__gte=seven_days_ago).count()
-            emotional_counts.append((state, count))
+        annotations = Annotations.objects.filter(
+            user=account,
+            emotional_state__in=['confuso', 'cansado'],
+            datetime__gte=seven_days_ago
+        ).order_by('datetime')
+
+        count = 0
+        max_count = 0
+        for annotation in annotations:
+            if annotation.emotional_state in ['confuso', 'cansado']:
+                count += 1
+                max_count = max(max_count, count)
+            else:
+                count = 0
+
+        if max_count >= 3:
+            alert_level = 'red'
+        elif 1 <= max_count <= 2:
+            alert_level = 'yellow'
+        else:
+            alert_level = 'green'
+
         user_emotional_states.append({
             'user': account,
-            'states': emotional_counts
-        })    
+            'alert_level': alert_level
+        })
+
     context = {
         'user_emotional_states': user_emotional_states,
     }
@@ -152,7 +171,6 @@ def report_emotional_trends(request):
             if count > 0:
                 trends[state] = count
         if trends:
-            # Identificar o estado emocional mais frequente
             most_frequent_state = max(trends, key=trends.get)
             user_emotional_trends.append({
                 'user': account,
