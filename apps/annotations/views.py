@@ -125,12 +125,14 @@ def report_alerts(request):
     user_emotional_states = []
 
     for account in accounts:
+        # Recupera as anotações emocionais do usuário nos últimos 7 dias
         annotations = Annotations.objects.filter(
             user=account,
             emotional_state__in=['confuso', 'cansado'],
             datetime__gte=seven_days_ago
         ).order_by('datetime')
 
+        # Verifica as ocorrências consecutivas de "confuso" ou "cansado"
         count = 0
         max_count = 0
         for annotation in annotations:
@@ -140,6 +142,7 @@ def report_alerts(request):
             else:
                 count = 0
 
+        # Determina a cor da linha com base no maior número de consecutivos
         if max_count >= 3:
             alert_level = 'red'
         elif 1 <= max_count <= 2:
@@ -151,6 +154,9 @@ def report_alerts(request):
             'user': account,
             'alert_level': alert_level
         })
+
+    # Ordena a lista: vermelho > amarelo > verde
+    user_emotional_states.sort(key=lambda x: {'red': 0, 'yellow': 1, 'green': 2}[x['alert_level']])
 
     context = {
         'user_emotional_states': user_emotional_states,
