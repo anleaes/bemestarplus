@@ -12,7 +12,6 @@
         <div class="row">
             <div class="col-md-12">
                 <br />
-                <br />
                 <table class="table table-hover">
                     <thead>
                         <tr>
@@ -39,10 +38,64 @@
                 </table>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h5><b>Resumo das Tendências Emocionais</b></h5>
+                <canvas id="emotionalTrendsChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            const ctx = document.getElementById('emotionalTrendsChart').getContext('2d');
+            const data = {
+                labels: ['Animado', 'Calmo', 'Frustrado', 'Confuso', 'Cansado'],
+                datasets: [{
+                    label: 'Tendências Emocionais',
+                    data: [
+                        {{ overall_trends.animado|default:"0" }},
+                        {{ overall_trends.calmo|default:"0" }},
+                        {{ overall_trends.frustrado|default:"0" }},
+                        {{ overall_trends.confuso|default:"0" }},
+                        {{ overall_trends.cansado|default:"0" }}
+                    ],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(153, 102, 255, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(153, 102, 255, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            };
+
+            const config = {
+                type: 'bar',
+                data: data,
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            };
+
+            const emotionalTrendsChart = new Chart(ctx, config);
+        </script>
     {% else %}
         <br />
-        <br />
-        <h5><b>Você não tem Permissão.</b></h5>
+        <h5><b>Você não tem permissão para acessar este relatório.</b></h5>
     {% endif %}
 </div>
 {% endblock body %}

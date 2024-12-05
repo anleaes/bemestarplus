@@ -7,6 +7,8 @@ from django.utils.timezone import now
 from datetime import timedelta
 from django.contrib import messages
 import random
+from django.db.models import Count
+from datetime import timedelta
 
 
 # Create your views here.
@@ -170,13 +172,19 @@ def report_emotional_trends(request):
     accounts = User.objects.all()
 
     user_emotional_trends = []
+    overall_trends = {state: 0 for state, _ in Annotations.EMOTIONAL_STATE_CHOICE}
+
     for account in accounts:
         trends = {}
-        for state, label in Annotations.EMOTIONAL_STATE_CHOICE:  # Corrigido aqui
-            count = Annotations.objects.filter(user=account, emotional_state=state, datetime__gte=seven_days_ago).count()
-            if count > 0:
-                trends[state] = count
-        if trends:
+        for state, label in Annotations.EMOTIONAL_STATE_CHOICE:
+            count = Annotations.objects.filter(
+                user=account,
+                emotional_state=state,
+                datetime__gte=seven_days_ago
+            ).count()
+            trends[state] = count
+            overall_trends[state] += count
+        if any(trends.values()):
             most_frequent_state = max(trends, key=trends.get)
             user_emotional_trends.append({
                 'user': account,
@@ -186,5 +194,8 @@ def report_emotional_trends(request):
 
     context = {
         'user_emotional_trends': user_emotional_trends,
+        'overall_trends': overall_trends,  # Certifique-se de passar isso!
     }
     return render(request, template_name, context)
+
+
